@@ -167,12 +167,6 @@ void merge_value_on_cpu(
 	float new_value=0.0f;
 	omp_set_num_threads(NUM_THREADS);	
 
-	//new add code
-	curandState *state;
-	int id = threadIdx.x + blockIdx.x * 64;
-    curandState localState = state[id];
-    int delta = 0;
-
 #pragma omp parallel private(i)
 	{
 		id=omp_get_thread_num(); 
