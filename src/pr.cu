@@ -48,8 +48,7 @@ static __global__ void  pr_kernel_outer(
 	float sum=0.0f;
 	unsigned int delta = 0;
 
-	curandState local_state;
-    local_state = global_state[threadIdx.x];
+	int id = threadIdx.x + blockIdx.x * 64;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -58,7 +57,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand(&local_state);
+			delta = curand_init(1234, id, 0, &state[id]);
 			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
