@@ -35,6 +35,8 @@
 
 int cudarandgen()
 {
+	curandGenerator_t gen;
+    float *devData;
 	return curandGenerateUniform(gen, devData, 1)%100;	
 }
 
@@ -53,9 +55,6 @@ static __global__ void  pr_kernel_outer(
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
 	int delta = 0;
-
-	curandGenerator_t gen;
-    float *devData;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -96,8 +95,7 @@ static __global__ void pr_kernel_inner(
 	float sum=0.0f;
 	int delta = 0;
 
-	curandGenerator_t gen;
-    float *devData;
+
 
 
 	for (int i = index; i < edge_num; i+=n)
