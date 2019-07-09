@@ -166,6 +166,13 @@ void merge_value_on_cpu(
 	int i,id;
 	float new_value=0.0f;
 	omp_set_num_threads(NUM_THREADS);	
+
+	//new add code
+	curandState *state;
+	int id = threadIdx.x + blockIdx.x * 64;
+    curandState localState = state[id];
+    int delta = 0;
+
 #pragma omp parallel private(i)
 	{
 		id=omp_get_thread_num(); 
@@ -178,7 +185,8 @@ void merge_value_on_cpu(
 				{
 					new_value+=h_add_value[j][i];  
 				}
-				new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
+				new_value = add_values[edge_dest[i]];
+				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				value_gpu[i]=new_value;
