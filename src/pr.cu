@@ -45,7 +45,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			values[dest] = rand()%100;
+			values[edge_dest[i]] = rand()%100;
 		}
 		/*
 		if (out_degree[src])
@@ -74,6 +74,7 @@ static __global__ void pr_kernel_inner(
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
 	float sum=0.0f;
+	int delta = 0;
 	for (int i = index; i < edge_num; i+=n)
 	{
 		int src=edge_src[i];
@@ -81,7 +82,8 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			values[dest] = rand()%100;
+			//delta = rand()%100;
+			values[edge_dest[i]] = rand()%100;
 		}
 
 		/*
@@ -96,7 +98,7 @@ static __global__ void pr_kernel_inner(
 	//check
 	float new_value=0.0f;
 	for (int i = index; i < edge_num; i+=n)
-	{
+	{		
 		new_value=add_values[edge_dest[i]]*PAGERANK_COEFFICIENT+1.0f - PAGERANK_COEFFICIENT;
 		if (fabs(new_value-values[edge_dest[i]])>PAGERANK_THRESHOLD)
 		{
