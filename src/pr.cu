@@ -50,7 +50,7 @@ static __global__ void  pr_kernel_outer(
 	int delta = 0;
 
 	curandGenerator_t gen;
-    int *devData;
+    float *devData;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -92,7 +92,7 @@ static __global__ void pr_kernel_inner(
 	int delta = 0;
 
 	curandGenerator_t gen;
-    int *devData;
+    float *devData;
 
 
 	for (int i = index; i < edge_num; i+=n)
