@@ -23,7 +23,20 @@
 			__FILE__, __LINE__, cudaGetErrorString(cudaGetLastError()));\
 	exit(1);\
 }
-#endif  // #ifdef __CUDA_RUNTIME_H__    
+#endif  // #ifdef __CUDA_RUNTIME_H__  
+
+
+__device__ float generate(curandState* globalState, int ind)
+{
+    //copy state to local mem
+    curandState localState = globalState[ind];
+    //apply uniform distribution with calculated random
+    float rndval = curand_uniform( &localState );
+    //update state
+    globalState[ind] = localState;
+    //return value
+    return rndval;
+}  
 
 
 static __global__ void  pr_kernel_outer(  
@@ -46,7 +59,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			delta = rand()%100;	
+			delta = curand_uniform()%100;	
 			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
