@@ -404,7 +404,7 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 			}
 			HANDLE_ERROR(cudaEventRecord(stop_outer[i], stream[i][iterate_in_outer-1]));
 
-            HANDLE_ERROR(cudaMemcpy((void *)(&(h_add_value[i])),(void *)(&(d_add_value[i])),sizeof(float)*(vertex_num+1),cudaMemcpyDeviceToHost));
+            HANDLE_ERROR(cudaMemcpy((void *)(h_add_value+i),(void *)(d_add_value+i),sizeof(float)*(vertex_num+1),cudaMemcpyDeviceToHost));
 			HANDLE_ERROR(cudaEventRecord(start_inner[i], stream[i][iterate_in_outer]));
 			//inner+flag
 			inner_edge_num=g[i]->edge_num-g[i]->edge_outer_num;
