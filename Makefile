@@ -1,7 +1,7 @@
 NVCC=/usr/local/cuda/bin/nvcc -g
 
 exp : src/main.cpp graph.o check.o graph.o check.o coding.o iterColor.o
-	${NVCC} -Xcompiler -fopenmp src/main.cpp obj/graph.o obj/check.o obj/coding.o obj/piterColor.o -o exp
+	${NVCC} -Xcompiler -fopenmp src/main.cpp obj/graph.o obj/check.o obj/coding.o obj/iterColor.o -o exp
 
 graph.o check.o graph.o check.o coding.o bfs.o: | obj
 
