@@ -38,6 +38,7 @@ static __global__ void  pr_kernel_outer(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
+	int delta = 0;
 	for (int i = index; i < edge_num; i+=n)
 	{
 		int src=edge_src[i];
