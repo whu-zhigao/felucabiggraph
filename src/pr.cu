@@ -45,7 +45,8 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			values[edge_dest[i]] = rand()%100;
+			delta = rand()%100;	
+			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
 		if (out_degree[src])
@@ -82,8 +83,8 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			//delta = rand()%100;
-			values[edge_dest[i]] = rand()%100;
+			delta = rand()%100;	
+			atomicAdd(&add_values[dest],delta);		
 		}
 
 		/*
@@ -98,12 +99,20 @@ static __global__ void pr_kernel_inner(
 	//check
 	float new_value=0.0f;
 	for (int i = index; i < edge_num; i+=n)
-	{		
-		new_value=add_values[edge_dest[i]]*PAGERANK_COEFFICIENT+1.0f - PAGERANK_COEFFICIENT;
+	{	
+		new_value = add_values[edge_dest[i]];
+		//new_value=add_values[edge_dest[i]]*PAGERANK_COEFFICIENT+1.0f - PAGERANK_COEFFICIENT;
+
+		if(new_value == values[edge_dest[i]])
+		{
+			flag = 1;
+		}
+		/*
 		if (fabs(new_value-values[edge_dest[i]])>PAGERANK_THRESHOLD)
 		{
 			flag=1;
 		}
+		*/
 	}
 	if (flag==1)  *continue_flag=1;
 }
