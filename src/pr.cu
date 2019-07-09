@@ -59,7 +59,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			delta = CURAND_CALL(curandGenerateUniform(gen, devData, 1))%100;	
+			delta = curandGenerateUniform(gen, devData, 1)%100;	
 			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
@@ -102,7 +102,7 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = CURAND_CALL(curandGenerateUniform(gen, devData, 1))%100;
+			delta = curandGenerateUniform(gen, devData, 1)%100;
 			atomicAdd(&add_values[dest],delta);		
 		}
 
