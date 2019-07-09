@@ -2,6 +2,8 @@ graphfile: /home/luoxuan/datasets/vgp-edgelist/amazon.txt_totem
 parts: 2
 algorithm: hdrf (lambda: 1.0)
 
+Vertices: 735292  edges: 3523247
+
 Replication factor: 1.4662
 Load relative standard deviation: 0.0
 Max partition size (edge cardinality): 1761624

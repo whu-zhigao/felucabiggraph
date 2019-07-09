@@ -93,13 +93,13 @@ int main(int argc, char *argv[])
     free(origin_g);
     
     */
-
+/*
     value_gpu=(int *)malloc(sizeof(int)*(vertex_num+1));
     bfs_gpu(g,gpu_num,value_gpu,dsize,first_vertex,copy_num,position_id);
     print_bfs_values(value_gpu,vertex_num+1);
     //free(g);
     free(value_gpu);
-
+*/
 	value_gpu_pr=(float *)malloc(sizeof(float)*(vertex_num+1));
 	out_degree=(int *)malloc(sizeof(int)*(vertex_num+1));
     origin_g=read_graph_edges_again_to_csr(filename_origin,edge_num,vertex_num);

@@ -1,9 +1,9 @@
 NVCC=/usr/local/cuda/bin/nvcc -g
 
-exp : src/main.cpp graph.o check.o graph.o check.o coding.o bfs.o pr.o
-	${NVCC} -Xcompiler -fopenmp src/main.cpp obj/graph.o obj/check.o obj/coding.o obj/bfs.o obj/pr.o -o exp
+exp : src/main.cpp graph.o check.o graph.o check.o coding.o pr.o
+	${NVCC} -Xcompiler -fopenmp src/main.cpp obj/graph.o obj/check.o obj/coding.o obj/pr.o -o exp
 
-graph.o check.o graph.o check.o coding.o bfs.o: | obj
+graph.o check.o graph.o check.o coding.o: | obj
 
 obj:
 	mkdir -p obj
