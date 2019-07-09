@@ -26,18 +26,6 @@
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
 
-__device__ float generate(curandState* globalState, int ind)
-{
-    //copy state to local mem
-    curandState localState = globalState[ind];
-    //apply uniform distribution with calculated random
-    float rndval = curand_uniform( &localState );
-    //update state
-    globalState[ind] = localState;
-    //return value
-    return rndval;
-}  
-
 
 static __global__ void  pr_kernel_outer(  
 		const int edge_num,
