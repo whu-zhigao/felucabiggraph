@@ -42,11 +42,18 @@ static __global__ void  pr_kernel_outer(
 	{
 		int src=edge_src[i];
 		int dest=edge_dest[i];
+
+		if(values[src] == values[dest])
+		{
+			values[dest] = rand()%100;
+		}
+		/*
 		if (out_degree[src])
 		{
 			sum=values[src]/out_degree[src];
 		    atomicAdd(&add_values[dest],sum);
-		}		
+		}
+		*/		
 	}
 }
 
@@ -71,12 +78,22 @@ static __global__ void pr_kernel_inner(
 	{
 		int src=edge_src[i];
 		int dest=edge_dest[i];
+
+		if(values[src] == values[dest])
+		{
+			values[dest] = rand()%100;
+		}
+
+		/*
 		if (out_degree[src])
 		{
 			sum=values[src]/out_degree[src];
 		    atomicAdd(&add_values[dest],sum);
 		}
+		*/
 	}
+
+	/*
 	__syncthreads();
 	//check
 	float new_value=0.0f;
@@ -89,6 +106,8 @@ static __global__ void pr_kernel_inner(
 		}
 	}
 	if (flag==1)  *continue_flag=1;
+
+	*/
 }
 
 
