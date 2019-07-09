@@ -49,6 +49,7 @@ static __global__ void  pr_kernel_outer(
 	unsigned int delta = 0;
 
 	int id = threadIdx.x + blockIdx.x * 64;
+	curandState *state;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
