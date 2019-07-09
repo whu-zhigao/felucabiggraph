@@ -33,6 +33,11 @@
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
+int cudarandgen()
+{
+	return curandGenerateUniform(gen, devData, 1)%100;	
+}
+
 
 
 static __global__ void  pr_kernel_outer(  
@@ -59,7 +64,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			delta = curandGenerateUniform(gen, devData, 1)%100;	
+			delta = cudarandgen();	
 			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
@@ -102,7 +107,7 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curandGenerateUniform(gen, devData, 1)%100;
+			delta = cudarandgen();
 			atomicAdd(&add_values[dest],delta);		
 		}
 
