@@ -8,6 +8,7 @@
 #include "graph.h"
 #include "timer.h"
 #include "algorithm.h"
+#include "iterColor.cu"
 //#include "cuda_runtime.h"
 /*
 Name: MAIN
