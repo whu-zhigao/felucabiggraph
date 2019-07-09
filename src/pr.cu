@@ -213,7 +213,7 @@ void Gather_result_pr(
 				{
 					new_value+=h_add_value[j][i];  
 				}
-				new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
+				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
 				value_gpu[i]=new_value;	
 			}
 		}
