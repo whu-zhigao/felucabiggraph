@@ -16,6 +16,7 @@
 #define PAGERANK_COEFFICIENT  0.85f
 #define PAGERANK_THRESHOLD  0.005f
 
+/*
 
 #define CUDA_CALL(x) do { if((x)!=cudaSuccess) { \
     printf("Error at %s:%d\n",__FILE__,__LINE__);\
@@ -23,7 +24,7 @@
 #define CURAND_CALL(x) do { if((x)!=CURAND_STATUS_SUCCESS) { \
     printf("Error at %s:%d\n",__FILE__,__LINE__);\
     return EXIT_FAILURE;}} while(0)
-
+*/
 
 #ifdef __CUDA_RUNTIME_H__
 #define HANDLE_ERROR(err) if (err != cudaSuccess) {	\
@@ -32,15 +33,6 @@
 	exit(1);\
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
-
-int cudarandgen()
-{
-	curandGenerator_t gen;
-    float *devData;
-	return curandGenerateUniform(gen, devData, 1)%100;	
-}
-
-
 
 static __global__ void  pr_kernel_outer(  
 		const int edge_num,
@@ -54,7 +46,10 @@ static __global__ void  pr_kernel_outer(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
-	int delta = 0;
+	unsigned int delta = 0;
+
+	curandState local_state;
+    local_state = global_state[threadIdx.x];
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -63,7 +58,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			delta = cudarandgen();	
+			delta = curand(&local_state);
 			atomicAdd(&add_values[dest],delta);		
 		}
 		/*
