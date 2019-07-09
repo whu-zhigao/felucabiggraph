@@ -92,8 +92,6 @@ static __global__ void pr_kernel_inner(
 		}
 		*/
 	}
-
-	/*
 	__syncthreads();
 	//check
 	float new_value=0.0f;
@@ -106,8 +104,6 @@ static __global__ void pr_kernel_inner(
 		}
 	}
 	if (flag==1)  *continue_flag=1;
-
-	*/
 }
 
 
