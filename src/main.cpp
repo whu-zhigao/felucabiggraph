@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     int *value_cpu;
     int *value_gpu;
     //pr different
-    float *value_gpu_iterColor;
+    float *value_gpu_pr;
     int *out_degree;
 
 	if(argc<8)
@@ -94,22 +94,19 @@ int main(int argc, char *argv[])
     
     */
 
-    /*
-
     value_gpu=(int *)malloc(sizeof(int)*(vertex_num+1));
     bfs_gpu(g,gpu_num,value_gpu,dsize,first_vertex,copy_num,position_id);
     print_bfs_values(value_gpu,vertex_num+1);
     //free(g);
     free(value_gpu);
-    */
 
-	value_gpu_iterColor=(float *)malloc(sizeof(float)*(vertex_num+1));
+	value_gpu_pr=(float *)malloc(sizeof(float)*(vertex_num+1));
 	out_degree=(int *)malloc(sizeof(int)*(vertex_num+1));
     origin_g=read_graph_edges_again_to_csr(filename_origin,edge_num,vertex_num);
     
     get_outdegree(origin_g,vertex_num,out_degree);
     free(origin_g);
-    iterColor_gpu(g,gpu_num,value_gpu_iterColor,dsize,out_degree,copy_num,position_id);
+    pr_gpu(g,gpu_num,value_gpu_pr,dsize,out_degree,copy_num,position_id);
     free(g);
     free(out_degree);
 
