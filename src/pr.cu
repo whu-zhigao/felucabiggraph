@@ -80,6 +80,7 @@ static __global__ void pr_kernel_inner(
 	//int sum=0.0f;
 	int delta = 0;
 
+/*
 	int thread_x = blockIdx.x * blockDim.x + threadIdx.x;
 	int thread_y = blockIdx.y * blockDim.y + threadIdx.y;
 	int thread_num = thread_x * NUM_THREADS_X + thread_y;
@@ -89,6 +90,14 @@ static __global__ void pr_kernel_inner(
 
     curandState localState = state[thread_num];
 
+    */
+
+    int idx = threadIdx.x+blockDim.x*blockIdx.x;
+	// assume have already set up curand and generated state for each thread...
+	// assume ranges vary by thread index
+	float myrandf = curand_uniform(&(my_curandstate[idx]));
+	
+
 	for (int i = index; i < edge_num; i+=n)
 	{
 		int src=edge_src[i];
@@ -96,7 +105,13 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand(&localState);
+
+			myrandf *= (max_rand_int[idx] - min_rand_int[idx] + 0.999999);
+			myrandf += min_rand_int[idx];
+			int myrand = (int)truncf(myrandf);
+
+			//delta = curand(&localState);
+			delta = myrand;
 			printf("here is CUDA rand %d", delta);
 			atomicAdd(&add_values[dest],delta);		
 		}
