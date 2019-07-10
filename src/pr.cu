@@ -28,8 +28,6 @@
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
-
-/*
 __global__ void setup_kernel(curandState *state){
 
   int idx = threadIdx.x+blockDim.x*blockIdx.x;
@@ -52,7 +50,7 @@ __global__ void generate_kernel(curandState *my_curandstate, const unsigned int 
     result[myrand-min_rand_int[idx]]++;
     count++;}
 }
-int main(){
+int * randgenerater(){
 
   curandState *d_state;
   cudaMalloc(&d_state, sizeof(curandState));
@@ -73,14 +71,13 @@ int main(){
   cudaMemcpy(d_min_rand_int, h_min_rand_int, sizeof(unsigned), cudaMemcpyHostToDevice);
   generate_kernel<<<1,1>>>(d_state, ITER, d_max_rand_int, d_min_rand_int, d_result);
   cudaMemcpy(h_result, d_result, (MAX-MIN+1) * sizeof(unsigned), cudaMemcpyDeviceToHost);
+  /*
   printf("Bin:    Count: \n");
   for (int i = MIN; i <= MAX; i++)
     printf("%d    %d\n", i, h_result[i-MIN]);
-
-  return 0;
-}
-
 */
+  return h_result;
+}
 
 
 static __global__ void  pr_kernel_outer(  
@@ -97,14 +94,22 @@ static __global__ void  pr_kernel_outer(
 	int sum=0.0f;
 	int delta = 0;
 
+	int len = sizeof(values) / sizeof(values[0]);
+
+	int randarray[edge_num]= randgenerater();
+
+
     curandState localState;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
 
+printf("Here is the rand number gerenater %d\n", randarray[i]);
+
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
 			delta = curand(&localState);
+
 			atomicAdd(&add_values[edge_dest[i]],delta);		
 		}
 		/*
@@ -149,7 +154,7 @@ static __global__ void pr_kernel_inner(
 		{
 			delta = curand(&localState);
 			//delta = myrand;
-			printf("here is CUDA rand delta %d", delta);
+			printf("here is CUDA rand delta %d \n", delta);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
