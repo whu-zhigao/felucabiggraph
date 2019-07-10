@@ -36,11 +36,13 @@ static __global__ void  pr_kernel_outer(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
-	float delta = 0;
-
+	int delta = 0;
+/*
 	curandState *state;
 	int id = threadIdx.x + blockIdx.x * 64;
     curandState localState = state[id];
+*/
+    curandState localState;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -49,6 +51,7 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
+			//delta = curand(&localState);
 			delta = curand(&localState);
 			atomicAdd(&add_values[dest],delta);		
 		}
@@ -79,12 +82,13 @@ static __global__ void pr_kernel_inner(
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
 	float sum=0.0f;
-	float delta = 0;
-
+	int delta = 0;
+/*
 	curandState *state;
 	int id = threadIdx.x + blockIdx.x * 64;
     curandState localState = state[id];
-
+*/
+    curandState localState;
 
 	for (int i = index; i < edge_num; i+=n)
 	{
@@ -93,7 +97,8 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand(&localState);
+			//delta = curand(&localState);
+			delta = curand(&localState;);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
