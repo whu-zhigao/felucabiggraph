@@ -326,16 +326,16 @@ void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degre
 	printf("Malloc is finished!\n");
 
 	/* Before While: Time Initialization */
-	int *outer_compute_time,*inner_compute_time,*compute_time,*total_compute_time,*extract_bitmap_time;
-	int gather_time=0.0;
-	int cpu_gather_time=0.0;
-	int total_time=0.0;
-	int record_time=0.0;
-	outer_compute_time=(int *)malloc(sizeof(int)*gpu_num);
-	inner_compute_time=(int *)malloc(sizeof(int)*gpu_num);
-	compute_time=(int *)malloc(sizeof(int)*gpu_num);
-	total_compute_time=(int *)malloc(sizeof(int)*gpu_num);
-	extract_bitmap_time=(int *)malloc(sizeof(int)*gpu_num);
+	float *outer_compute_time,*inner_compute_time,*compute_time,*total_compute_time,*extract_bitmap_time;
+	float gather_time=0.0;
+	float cpu_gather_time=0.0;
+	float total_time=0.0;
+	float record_time=0.0;
+	outer_compute_time=(float *)malloc(sizeof(int)*gpu_num);
+	inner_compute_time=(float *)malloc(sizeof(int)*gpu_num);
+	compute_time=(float *)malloc(sizeof(int)*gpu_num);
+	total_compute_time=(float *)malloc(sizeof(int)*gpu_num);
+	extract_bitmap_time=(float *)malloc(sizeof(int)*gpu_num);
 
 	memset(outer_compute_time,0,sizeof(int)*gpu_num);
 	memset(inner_compute_time,0,sizeof(int)*gpu_num);
