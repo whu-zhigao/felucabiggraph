@@ -25,6 +25,30 @@
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
+
+int countDistinct(int arr[], int n) 
+{ 
+    // First sort the array so that all 
+    // occurrences become consecutive 
+    sort(arr, arr + n); 
+  
+    // Traverse the sorted array 
+    int res = 0; 
+    for (int i = 0; i < n; i++) { 
+  
+        // Move the index ahead while 
+        // there are duplicates 
+        while (i < n - 1 && arr[i] == arr[i + 1]) 
+            i++; 
+  
+        res++; 
+    } 
+  
+    return res; 
+} 
+
+
+
 static __global__ void  pr_kernel_outer(  
 		const int edge_num,
 		const int * const edge_src,
@@ -151,7 +175,8 @@ void merge_value_on_cpu(
 	int new_value=0;
 	omp_set_num_threads(NUM_THREADS);	
 
-	set<T> colorset;
+	int colornumbers = sizeof(value_gpu) / sizeof(value_gpu[0]); 
+    
 
 #pragma omp parallel private(i)
 	{
@@ -172,8 +197,8 @@ void merge_value_on_cpu(
 					//flag=1;
 				value_gpu[i]=new_value;
 			//printf("Here is the Coloring value: %d \n", value_gpu[i]);
-			colorset.insert(value_gpu[i]);
-			printf("Here is the Coloring value: %d \n", colorset.size);
+
+			printf("Here is the Coloring value: %d \n", countDistinct(value_gpu, colornumbers));
 			}		
 		}
 
