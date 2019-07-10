@@ -48,7 +48,8 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
-			delta = curand(&localState);
+			//delta = curand(&localState);
+			delta = curand(100);
 			atomicAdd(&add_values[edge_dest[i]],delta);		
 		}
 		/*
@@ -89,7 +90,8 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand(&localState);
+			//delta = curand(&localState);
+			delta = curand(100);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
