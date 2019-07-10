@@ -3,12 +3,12 @@
 #include<stdio.h>
 #include<omp.h>
 #include<curand_kernel.h>
+#include <set>
 
 #include "graph.h"
 #include "timer.h"
 //#include "algorithm.h"
 #include "cuda_runtime.h"
-#include "set.h"
 
 // The number of partitioning the outer chunk must be greater or equal to 1
 #define ITERATE_IN_OUTER 2
