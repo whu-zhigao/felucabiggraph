@@ -104,6 +104,7 @@ static __global__ void pr_kernel_inner(
 	// assume have already set up curand and generated state for each thread...
 	// assume ranges vary by thread index
 	curandState *my_curandstate;
+	curandState localState;
 	float myrandf = curand_uniform(&(my_curandstate[idx]));
 	
 
