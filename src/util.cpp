@@ -3,6 +3,25 @@
 #include<stdio.h>
 #include<assert.h> 
 
+int countDistinct(int arr[], int n) 
+{ 
+    int res = 1; 
+  
+    // Pick all elements one by one 
+    for (int i = 1; i < n; i++) { 
+        int j = 0; 
+        for (j = 0; j < i; j++) 
+            if (arr[i] == arr[j]) 
+                break; 
+  
+        // If not printed earlier, then print it 
+        if (i == j) 
+            res++; 
+    } 
+    return res; 
+} 
+  
+
 void sort(int *array, int count)  
 {/* sorts the elements in array.  count is the number of elements in the array */	
 	int ii, jj, minIndex, temp;	

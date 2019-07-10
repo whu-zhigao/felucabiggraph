@@ -176,7 +176,7 @@ void merge_value_on_cpu(
 				value_gpu[i]=new_value;
 			printf("Here is the Coloring value: %d \n", value_gpu[i]);
 
-			printf("Here is the Coloring value: %d \n", printDistinctElements(value_gpu, colornumbers));
+			printf("Here is the Coloring Numbers: %d \n", countDistinct(value_gpu, sizeof(value_gpu) / sizeof(value_gpu[0])));
 			}		
 		}
 
