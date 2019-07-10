@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<omp.h>
 #include<curand_kernel.h>
-#include <set>
+#include <assert.h> 
 
 #include "graph.h"
 #include "timer.h"
@@ -50,7 +50,8 @@ int printDistinctElements(const int *array, int count)  {/* sorts the array with
 	int ii;
 	int item_numbers = 0;
 
-	tempArray = (int *) calloc(sizeof(int) , count);	assert(tempArray != NULL);
+	tempArray = (int *) calloc(sizeof(int) , count);	
+	assert(tempArray != NULL);
 
 	memcpy(tempArray, array, sizeof(int)* count);	/* void *memcpy(void *dest, const void *src, size_t n);
 		Description:
