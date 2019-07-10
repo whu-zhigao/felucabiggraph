@@ -109,14 +109,8 @@ int main(int argc, char *argv[])
     free(origin_g);
     pr_gpu(g,gpu_num,value_gpu_pr,dsize,out_degree,copy_num,position_id);
 
-    printf("The total color number is %d \n", countDistinct(value_gpu_pr, sizeof(value_gpu_pr)/sizeof(value_gpu_pr[0])));
+    printf("The sizeof(value_gpu_pr) is: %d and the sizeof(value_gpu_pr[0]) is: %d, total color number is %d \n", sizeof(value_gpu_pr), sizeof(value_gpu_pr[0]), countDistinct(value_gpu_pr, sizeof(value_gpu_pr)/sizeof(value_gpu_pr[0])));
    
-
-   	int arr[] = { 12, 10, 9, 45, 2, 10, 10, 45 }; 
-    int len = sizeof(arr) / sizeof(arr[0]);
-
-    printf("the lenth is %d \n", countDistinct(arr, len));
-
     free(g);
     free(out_degree);
 
