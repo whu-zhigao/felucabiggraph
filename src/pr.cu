@@ -42,13 +42,11 @@ static __global__ void  pr_kernel_outer(
 
 	for (int i = index; i < edge_num; i+=n)
 	{
-		int src=edge_src[i];
-		int dest=edge_dest[i];
 
-		if(values[src] == values[dest])
+		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
 			delta = curand(&localState);
-			atomicAdd(&add_values[dest],delta);		
+			atomicAdd(&add_values[edge_dest[i]],delta);		
 		}
 		/*
 		if (out_degree[src])
@@ -76,7 +74,7 @@ static __global__ void pr_kernel_inner(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
-	float sum=0.0f;
+	//float sum=0.0f;
 	int delta = 0;
 
     curandState localState;
@@ -170,7 +168,6 @@ void merge_value_on_cpu(
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				value_gpu[i]=new_value;
-			printf("Here is the PR value %.3f \n", value_gpu[i]);
 			}		
 		}
 
@@ -210,7 +207,7 @@ void Gather_result_pr(
 /* PageRank algorithm on GPU */
 void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id)
 {
-	printf("PageRank is running on GPU...............\n");
+	printf("Graph Coloring is running on GPU...............\n");
 	printf("Start malloc edgelist...\n");
 
 	int **h_flag=(int **)malloc(sizeof(int *)*gpu_num);
