@@ -98,7 +98,7 @@ static __global__ void pr_kernel_inner(
 		if(values[src] == values[dest])
 		{
 			//delta = curand(&localState);
-			delta = curand(&localState;);
+			delta = curand(&localState);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
