@@ -110,9 +110,10 @@ int main(int argc, char *argv[])
     pr_gpu(g,gpu_num,value_gpu_pr,dsize,out_degree,copy_num,position_id);
 
     printf("The total color number is %d \n", countDistinct(value_gpu_pr, sizeof(value_gpu_pr)/sizeof(value_gpu_pr[0])));
-    int aaaaaa[10] = {0,1,1,2,2,3,3,5,5,6};
+    int * arr;
+    arr={0,1,1,2,2,3,3,5,5,6};
 
-    printf(countDistinct(aaaaaa, 10));
+    printf(countDistinct(arr, 10));
 
     free(g);
     free(out_degree);
