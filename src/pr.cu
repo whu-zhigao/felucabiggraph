@@ -37,11 +37,7 @@ static __global__ void  pr_kernel_outer(
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
 	int delta = 0;
-/*
-	curandState *state;
-	int id = threadIdx.x + blockIdx.x * 64;
-    curandState localState = state[id];
-*/
+
     curandState localState;
 
 	for (int i = index; i < edge_num; i+=n)
@@ -51,7 +47,6 @@ static __global__ void  pr_kernel_outer(
 
 		if(values[src] == values[dest])
 		{
-			//delta = curand(&localState);
 			delta = curand(&localState);
 			atomicAdd(&add_values[dest],delta);		
 		}
@@ -83,11 +78,7 @@ static __global__ void pr_kernel_inner(
 	int flag=0;
 	float sum=0.0f;
 	int delta = 0;
-/*
-	curandState *state;
-	int id = threadIdx.x + blockIdx.x * 64;
-    curandState localState = state[id];
-*/
+
     curandState localState;
 
 	for (int i = index; i < edge_num; i+=n)
@@ -97,7 +88,6 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			//delta = curand(&localState);
 			delta = curand(&localState);
 			atomicAdd(&add_values[dest],delta);		
 		}
@@ -174,8 +164,9 @@ void merge_value_on_cpu(
 				{
 					new_value+=h_add_value[j][i];  
 				}
-				//new_value = add_values[edge_dest[i]];
+				new_value = add_values[edge_dest[i]];
 				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
+
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				value_gpu[i]=new_value;
