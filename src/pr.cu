@@ -90,6 +90,7 @@ static __global__ void pr_kernel_inner(
 		if(values[src] == values[dest])
 		{
 			delta = curand(&localState);
+			printf("here is CUDA rand %d", delta);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
