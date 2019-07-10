@@ -16,16 +16,6 @@
 #define PAGERANK_COEFFICIENT  0.85f
 #define PAGERANK_THRESHOLD  0.005f
 
-/*
-
-#define CUDA_CALL(x) do { if((x)!=cudaSuccess) { \
-    printf("Error at %s:%d\n",__FILE__,__LINE__);\
-    return EXIT_FAILURE;}} while(0)
-#define CURAND_CALL(x) do { if((x)!=CURAND_STATUS_SUCCESS) { \
-    printf("Error at %s:%d\n",__FILE__,__LINE__);\
-    return EXIT_FAILURE;}} while(0)
-*/
-
 #ifdef __CUDA_RUNTIME_H__
 #define HANDLE_ERROR(err) if (err != cudaSuccess) {	\
 	printf("CUDA Error in %s at line %d: %s\n", \
@@ -46,7 +36,7 @@ static __global__ void  pr_kernel_outer(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	float sum=0.0f;
-	unsigned int delta = 0;
+	float delta = 0;
 
 	curandState *state;
 	int id = threadIdx.x + blockIdx.x * 64;
@@ -89,7 +79,7 @@ static __global__ void pr_kernel_inner(
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
 	float sum=0.0f;
-	int delta = 0;
+	float delta = 0;
 
 	curandState *state;
 	int id = threadIdx.x + blockIdx.x * 64;
