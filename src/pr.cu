@@ -168,6 +168,7 @@ void merge_value_on_cpu(
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				value_gpu[i]=new_value;
+			printf("Here is the Coloring Valuse: %3f \n", value_gpu[i]);
 			}		
 		}
 
