@@ -92,7 +92,8 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand_uniform(&localState);			
+			delta = curand(&localState) % 100;	
+			printf("here is delta value %d \n", delta);		
 			atomicAdd(&add_values[dest],delta);	
 			printf("here is atomicAdd value %d \n", atomicAdd(&add_values[dest],delta));	
 		}
