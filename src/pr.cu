@@ -50,7 +50,7 @@ __global__ void generate_kernel(curandState *my_curandstate, const unsigned int 
     result[myrand-min_rand_int[idx]]++;
     count++;}
 }
-int * randgenerater(){
+int * randgenerater(int MAX, int MIN){
 
   curandState *d_state;
   cudaMalloc(&d_state, sizeof(curandState));
@@ -96,7 +96,7 @@ static __global__ void  pr_kernel_outer(
 
 	int len = sizeof(values) / sizeof(values[0]);
 
-	int randarray[edge_num]= randgenerater();
+	int randarray[edge_num]= randgenerater(edge_num, 1);
 
 
     curandState localState;
