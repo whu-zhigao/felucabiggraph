@@ -3,6 +3,8 @@
 #include<stdio.h>
 #include<omp.h>
 #include<curand_kernel.h>
+#include <curand.h>
+#include <math.h>
 
 
 #include "graph.h"
