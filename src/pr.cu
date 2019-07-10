@@ -80,7 +80,14 @@ static __global__ void pr_kernel_inner(
 	//int sum=0.0f;
 	int delta = 0;
 
-    curandState localState;
+	int thread_x = blockIdx.x * blockDim.x + threadIdx.x;
+	int thread_y = blockIdx.y * blockDim.y + threadIdx.y;
+	int thread_num = thread_x * NUM_THREADS_X + thread_y;
+	//curandState_t* RandStates;
+
+	curandState *state;
+
+    curandState localState = state[thread_num];
 
 	for (int i = index; i < edge_num; i+=n)
 	{
