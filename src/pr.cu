@@ -8,6 +8,7 @@
 #include "timer.h"
 //#include "algorithm.h"
 #include "cuda_runtime.h"
+#include "set.h"
 
 // The number of partitioning the outer chunk must be greater or equal to 1
 #define ITERATE_IN_OUTER 2
@@ -147,8 +148,10 @@ void merge_value_on_cpu(
 		int flag)
 {
 	int i,id;
-	int new_value=0.0f;
+	int new_value=0;
 	omp_set_num_threads(NUM_THREADS);	
+
+	set<T> colorset;
 
 #pragma omp parallel private(i)
 	{
@@ -157,7 +160,7 @@ void merge_value_on_cpu(
 		{
 			if (copy_num[i]>1)
 			{
-				new_value=0.0f;
+				new_value=0;
 				for (int j = 0; j < gpu_num; ++j)
 				{
 					new_value+=h_add_value[j][i];  
@@ -168,7 +171,9 @@ void merge_value_on_cpu(
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				value_gpu[i]=new_value;
-			printf("Here is the Coloring value: %d \n", value_gpu[i]);
+			//printf("Here is the Coloring value: %d \n", value_gpu[i]);
+			colorset.insert(value_gpu[i]);
+			printf("Here is the Coloring value: %d \n", colorset.size);
 			}		
 		}
 
@@ -184,7 +189,7 @@ void Gather_result_pr(
 		)
 {
 	int i,id;
-	int new_value=0.0f;
+	int new_value=0;
 	omp_set_num_threads(NUM_THREADS);	
 #pragma omp parallel private(i)
 	{
@@ -193,7 +198,7 @@ void Gather_result_pr(
 		{
 			if (copy_num[i]>1)
 			{
-				new_value=0.0f;
+				new_value=0;
 				for (int j = 0; j < gpu_num; ++j)
 				{
 					new_value+=h_add_value[j][i];  
