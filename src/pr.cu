@@ -103,6 +103,7 @@ static __global__ void pr_kernel_inner(
     int idx = threadIdx.x+blockDim.x*blockIdx.x;
 	// assume have already set up curand and generated state for each thread...
 	// assume ranges vary by thread index
+	curandState *my_curandstate;
 	float myrandf = curand_uniform(&(my_curandstate[idx]));
 	
 
