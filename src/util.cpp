@@ -1,4 +1,7 @@
-#include <assert.h> 
+#include<string.h>
+#include<malloc.h>
+#include<stdio.h>
+#include<assert.h> 
 
 void sort(int *array, int count)  
 {/* sorts the elements in array.  count is the number of elements in the array */	
