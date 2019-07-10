@@ -40,8 +40,8 @@ int printDistinctElements(const int *array, int count)  {/* sorts the array with
 	*/
 	sort(tempArray, count);
 
-	printf("The distinct elements you entered are:\n");
-	printf("%d ", tempArray[0]);
+	//printf("The distinct elements you entered are:\n");
+	//printf("%d ", tempArray[0]);
 	for (ii = 1; ii < count; ii++)  {
 		if (tempArray[ii] != tempArray[ii-1])
 			 //printf("%d ", tempArray[ii]);
