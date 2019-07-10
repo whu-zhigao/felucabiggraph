@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     int *value_cpu;
     int *value_gpu;
     //pr different
-    float *value_gpu_pr;
+    int *value_gpu_pr;
     int *out_degree;
 
 	if(argc<8)
