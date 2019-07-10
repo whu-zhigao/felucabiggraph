@@ -121,9 +121,9 @@ static __global__ void pr_kernel_inner(
 			myrandf += min_rand_int[idx];
 			int myrand = (int)truncf(myrandf);
 
-			//delta = curand(&localState);
-			delta = myrand;
-			printf("here is CUDA rand %d", delta);
+			delta = curand(&localState);
+			//delta = myrand;
+			printf("here is CUDA rand %d", myrand);
 			atomicAdd(&add_values[dest],delta);		
 		}
 
