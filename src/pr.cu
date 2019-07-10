@@ -29,13 +29,13 @@ static __global__ void  pr_kernel_outer(
 		const int * const edge_src,
 		const int * const edge_dest,
 		const int * const out_degree,
-		const float * const values,
-		float * const add_values)
+		const int * const values,
+		int * const add_values)
 {
 	// total thread number & thread index of this thread
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
-	float sum=0.0f;
+	int sum=0.0f;
 	int delta = 0;
 
     curandState localState;
@@ -65,8 +65,8 @@ static __global__ void pr_kernel_inner(
 		const int * const edge_src,
 		const int * const edge_dest,
 		const int * const out_degree,
-		const float * const values,
-		float * const add_values,
+		const int * const values,
+		int * const add_values,
 		int * const continue_flag)
 {
 
@@ -74,7 +74,7 @@ static __global__ void pr_kernel_inner(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
-	//float sum=0.0f;
+	//int sum=0.0f;
 	int delta = 0;
 
     curandState localState;
@@ -100,7 +100,7 @@ static __global__ void pr_kernel_inner(
 	}
 	__syncthreads();
 	//check
-	float new_value=0.0f;
+	int new_value=0.0f;
 	for (int i = index; i < edge_num; i+=n)
 	{	
 		new_value = add_values[edge_dest[i]];
@@ -124,8 +124,8 @@ static __global__ void pr_kernel_inner(
 static __global__ void kernel_extract_values(
 		int const edge_num,
 		int * const edge_dest,
-		float * const add_value,
-		float * const value
+		int * const add_value,
+		int * const value
 		)
 {
 	int n = blockDim.x * gridDim.x;
@@ -141,13 +141,13 @@ static __global__ void kernel_extract_values(
 void merge_value_on_cpu(
 		int const vertex_num, 
 		int const gpu_num, 
-		float * const  *h_add_value, 
-		float * const value_gpu , 
+		int * const  *h_add_value, 
+		int * const value_gpu , 
 		int *copy_num, 
 		int flag)
 {
 	int i,id;
-	float new_value=0.0f;
+	int new_value=0.0f;
 	omp_set_num_threads(NUM_THREADS);	
 
 #pragma omp parallel private(i)
@@ -179,12 +179,12 @@ void Gather_result_pr(
 		int const vertex_num, 
 		int const gpu_num, 
 		int * const copy_num,
-		float * const  *h_add_value,  
-		float * const value_gpu
+		int * const  *h_add_value,  
+		int * const value_gpu
 		)
 {
 	int i,id;
-	float new_value=0.0f;
+	int new_value=0.0f;
 	omp_set_num_threads(NUM_THREADS);	
 #pragma omp parallel private(i)
 	{
@@ -206,7 +206,7 @@ void Gather_result_pr(
 }
 
 /* PageRank algorithm on GPU */
-void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id)
+void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id)
 {
 	printf("Graph Coloring is running on GPU...............\n");
 	printf("Start malloc edgelist...\n");
@@ -217,13 +217,13 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 	int **d_edge_inner_dst=(int **)malloc(sizeof(int *)*gpu_num);
 	int **d_edge_outer_src=(int **)malloc(sizeof(int *)*gpu_num);
 	int **d_edge_outer_dst=(int **)malloc(sizeof(int *)*gpu_num);
-	float **h_value=(float **)malloc(sizeof(float *)* gpu_num);
-	float **h_add_value=(float **)malloc(sizeof(float *)*gpu_num);
+	int **h_value=(int **)malloc(sizeof(int *)* gpu_num);
+	int **h_add_value=(int **)malloc(sizeof(int *)*gpu_num);
 
-	float **d_value=(float **)malloc(sizeof(float *)*gpu_num);
+	int **d_value=(int **)malloc(sizeof(int *)*gpu_num);
 	//pr different
-	//float **d_tem_value=(float **)malloc(sizeof(float *)*gpu_num);
-	float **d_add_value=(float **)malloc(sizeof(float *)*gpu_num);
+	//int **d_tem_value=(int **)malloc(sizeof(int *)*gpu_num);
+	int **d_add_value=(int **)malloc(sizeof(int *)*gpu_num);
 	int **d_outdegree=(int **)malloc(sizeof(int *)*gpu_num);
 
 	int **d_flag=(int **)malloc(sizeof(int *)*gpu_num);
@@ -237,10 +237,10 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 
 	for (int i = 0; i < gpu_num; ++i)
 	{
-		h_value[i]=(float *)malloc(sizeof(float)*(vertex_num+1));
-		h_add_value[i]=(float *)malloc(sizeof(float)*(vertex_num+1));
+		h_value[i]=(int *)malloc(sizeof(int)*(vertex_num+1));
+		h_add_value[i]=(int *)malloc(sizeof(int)*(vertex_num+1));
 		//memset 0.0 or 1.0 
-		memset(h_value[i],0.0,sizeof(float)*(vertex_num+1));
+		memset(h_value[i],0.0,sizeof(int)*(vertex_num+1));
 		h_flag[i]=(int *)malloc(sizeof(int));
 	}
 
@@ -307,15 +307,15 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 		HANDLE_ERROR(cudaMemcpyAsync((void *)d_edge_inner_src[i],(void *)g[i]->edge_inner_src,sizeof(int)*inner_size,cudaMemcpyHostToDevice,stream[i][iterate_in_outer]));
 		HANDLE_ERROR(cudaMemcpyAsync((void *)d_edge_inner_dst[i],(void *)g[i]->edge_inner_dst,sizeof(int)*inner_size,cudaMemcpyHostToDevice,stream[i][iterate_in_outer]));
 
-		HANDLE_ERROR(cudaMalloc((void **)&d_value[i],sizeof(float)*(vertex_num+1)));
-		HANDLE_ERROR(cudaMemcpyAsync((void *)d_value[i],(void *)h_value[i],sizeof(float)*(vertex_num+1),cudaMemcpyHostToDevice,stream[i][0]));
+		HANDLE_ERROR(cudaMalloc((void **)&d_value[i],sizeof(int)*(vertex_num+1)));
+		HANDLE_ERROR(cudaMemcpyAsync((void *)d_value[i],(void *)h_value[i],sizeof(int)*(vertex_num+1),cudaMemcpyHostToDevice,stream[i][0]));
 		//pr different
-		HANDLE_ERROR(cudaMalloc((void **)&d_add_value[i],sizeof(float)*(vertex_num+1)));
+		HANDLE_ERROR(cudaMalloc((void **)&d_add_value[i],sizeof(int)*(vertex_num+1)));
 		//"memset only works for bytes. If you're using the runtime API, you can use thrust::fill() instead"
-		//HANDLE_ERROR(cudaMemset((void **)&d_add_value[i],0,sizeof(float)*(vertex_num+1)));
+		//HANDLE_ERROR(cudaMemset((void **)&d_add_value[i],0,sizeof(int)*(vertex_num+1)));
 
-		//HANDLE_ERROR(cudaMalloc((void **)&d_tem_value[i],sizeof(float)*(vertex_num+1)));
-		//HANDLE_ERROR(cudaMalloc((void **)&d_tem_value[i],sizeof(float)*(vertex_num+1)));
+		//HANDLE_ERROR(cudaMalloc((void **)&d_tem_value[i],sizeof(int)*(vertex_num+1)));
+		//HANDLE_ERROR(cudaMalloc((void **)&d_tem_value[i],sizeof(int)*(vertex_num+1)));
 		HANDLE_ERROR(cudaMalloc((void **)&d_outdegree[i],sizeof(int)*(vertex_num+1)));
 		HANDLE_ERROR(cudaMemcpyAsync(d_outdegree[i],out_degree, sizeof(int)*(vertex_num+1),cudaMemcpyHostToDevice,stream[i][0]));
 
@@ -326,20 +326,20 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 	printf("Malloc is finished!\n");
 
 	/* Before While: Time Initialization */
-	float *outer_compute_time,*inner_compute_time,*compute_time,*total_compute_time,*extract_bitmap_time;
-	float gather_time=0.0;
-	float cpu_gather_time=0.0;
-	float total_time=0.0;
-	float record_time=0.0;
-	outer_compute_time=(float *)malloc(sizeof(float)*gpu_num);
-	inner_compute_time=(float *)malloc(sizeof(float)*gpu_num);
-	compute_time=(float *)malloc(sizeof(float)*gpu_num);
-	total_compute_time=(float *)malloc(sizeof(float)*gpu_num);
-	extract_bitmap_time=(float *)malloc(sizeof(float)*gpu_num);
+	int *outer_compute_time,*inner_compute_time,*compute_time,*total_compute_time,*extract_bitmap_time;
+	int gather_time=0.0;
+	int cpu_gather_time=0.0;
+	int total_time=0.0;
+	int record_time=0.0;
+	outer_compute_time=(int *)malloc(sizeof(int)*gpu_num);
+	inner_compute_time=(int *)malloc(sizeof(int)*gpu_num);
+	compute_time=(int *)malloc(sizeof(int)*gpu_num);
+	total_compute_time=(int *)malloc(sizeof(int)*gpu_num);
+	extract_bitmap_time=(int *)malloc(sizeof(int)*gpu_num);
 
-	memset(outer_compute_time,0,sizeof(float)*gpu_num);
-	memset(inner_compute_time,0,sizeof(float)*gpu_num);
-	memset(compute_time,0,sizeof(float)*gpu_num);
+	memset(outer_compute_time,0,sizeof(int)*gpu_num);
+	memset(inner_compute_time,0,sizeof(int)*gpu_num);
+	memset(compute_time,0,sizeof(int)*gpu_num);
 
 
 	/* Before While: Variable Initialization */
@@ -370,7 +370,7 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 							d_value[i],
 							d_add_value[i]);
 					//TODO didn't not realize overlap
-					//HANDLE_ERROR(cudaMemcpyAsync((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(float)*(vertex_num+1),cudaMemcpyDeviceToHost,stream[i][j-1]));
+					//HANDLE_ERROR(cudaMemcpyAsync((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(int)*(vertex_num+1),cudaMemcpyDeviceToHost,stream[i][j-1]));
 				}
 			}
 
@@ -385,11 +385,11 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 						d_value[i],
 						d_add_value[i]);
 				//TODO didn't not realize 
-				//HANDLE_ERROR(cudaMemcpyAsync((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(float)*(vertex_num+1),cudaMemcpyDeviceToHost,stream[i][iterate_in_outer-1]));
+				//HANDLE_ERROR(cudaMemcpyAsync((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(int)*(vertex_num+1),cudaMemcpyDeviceToHost,stream[i][iterate_in_outer-1]));
 			}
 			HANDLE_ERROR(cudaEventRecord(stop_outer[i], stream[i][iterate_in_outer-1]));
 
-            HANDLE_ERROR(cudaMemcpy((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(float)*(vertex_num+1),cudaMemcpyDeviceToHost));
+            HANDLE_ERROR(cudaMemcpy((void *)(h_add_value[i]),(void *)(d_add_value[i]),sizeof(int)*(vertex_num+1),cudaMemcpyDeviceToHost));
 			HANDLE_ERROR(cudaEventRecord(start_inner[i], stream[i][iterate_in_outer]));
 			//inner+flag
 			inner_edge_num=g[i]->edge_num-g[i]->edge_outer_num;
@@ -421,7 +421,7 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 		{
 			cudaSetDevice(i);
 			//extract bitmap to the value
-			HANDLE_ERROR(cudaMemcpyAsync(d_add_value[i], value_gpu,sizeof(float)*(vertex_num+1),cudaMemcpyHostToDevice,stream[i][0]));
+			HANDLE_ERROR(cudaMemcpyAsync(d_add_value[i], value_gpu,sizeof(int)*(vertex_num+1),cudaMemcpyHostToDevice,stream[i][0]));
 			HANDLE_ERROR(cudaEventRecord(start_asyn[i], stream[i][0]));
 			// d_value copy to the value of outer vertices
 			kernel_extract_values<<<208,128,0,stream[i][0]>>>
@@ -472,7 +472,7 @@ void pr_gpu(Graph **g,int gpu_num,float *value_gpu,DataSize *dsize, int* out_deg
 	printf("Time print\n");
 
 	//collect the information of time 
-	float total_time_n=0.0;
+	int total_time_n=0.0;
 	for (int i = 0; i < gpu_num; ++i)
 	{
 		if(total_time_n<total_compute_time[i])
