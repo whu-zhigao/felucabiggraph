@@ -25,6 +25,22 @@
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
+void sort(int *array, int count)  
+{/* sorts the elements in array.  count is the number of elements in the array */	
+	int ii, jj, minIndex, temp;	
+	for (ii = 0; ii < count; ii++) 
+	{		
+		minIndex = ii;		
+
+		for (jj = ii+1; jj < count; jj++)			
+			if (array[jj] < array[minIndex]) 
+				minIndex = jj;		
+		/* now swap the elements at indices minIndex and ii */		
+		temp = array[minIndex];		
+		array[minIndex] = array[ii];		
+		array[ii] = temp;	
+	}
+} 
 
 int countDistinct(int arr[], int n) 
 { 
