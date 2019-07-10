@@ -28,6 +28,12 @@
 }
 #endif  // #ifdef __CUDA_RUNTIME_H__  
 
+__global__ void setup_kernel(curandState *state){
+
+  int idx = threadIdx.x+blockDim.x*blockIdx.x;
+  curand_init(1234, idx, 0, &state[idx]);
+}
+
 
 static __global__ void  pr_kernel_outer(  
 		const int edge_num,
@@ -104,6 +110,8 @@ static __global__ void pr_kernel_inner(
 	{
 		int src=edge_src[i];
 		int dest=edge_dest[i];
+		const unsigned *max_rand_int;
+		const unsigned *min_rand_int
 
 		if(values[src] == values[dest])
 		{
