@@ -112,7 +112,7 @@ static __global__ void pr_kernel_inner(
 		int src=edge_src[i];
 		int dest=edge_dest[i];
 		const unsigned *max_rand_int;
-		const unsigned *min_rand_int
+		const unsigned *min_rand_int;
 
 		if(values[src] == values[dest])
 		{
