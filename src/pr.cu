@@ -92,9 +92,9 @@ static __global__ void pr_kernel_inner(
 
 		if(values[src] == values[dest])
 		{
-			delta = curand_uniform(&localState);
-			//printf("here is CUDA rand delta %d \n", delta);
-			atomicAdd(&add_values[dest],delta);		
+			delta = curand_uniform(&localState);			
+			atomicAdd(&add_values[dest],delta);	
+			printf("here is atomicAdd value %d \n", atomicAdd(&add_values[dest],delta));	
 		}
 		/*
 		if (out_degree[src])
