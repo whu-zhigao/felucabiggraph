@@ -53,7 +53,9 @@ static __global__ void  pr_kernel_outer(
 		{
 			//delta = curand(&localState);
 			delta = curand(&localState) % 100;
-			atomicAdd(&add_values[edge_dest[i]],delta);		
+			printf("The value of delta: %d \t", delta);
+			atomicAdd(&add_values[edge_dest[i]],delta);	
+			printf("The value of atomicAdd: %d \n", atomicAdd(&add_values[edge_dest[i]],delta));	
 		}
 		/*
 		if (out_degree[src])
@@ -500,7 +502,7 @@ void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degre
 	total_time=total_time_n>gather_time?total_time_n:gather_time;
 
 //	printf("Total time of pr_gpu is %.3f ms\n",total_time);
-	printf("Elapsed time of pr_gpu is %.3f ms\n", total_time/(step));
+	printf("Elapsed time of coloring is %.3f ms\n", total_time/(step));
 	printf("-------------------------------------------------------\n");
 	printf("Detail:\n");
 	printf("\n");
