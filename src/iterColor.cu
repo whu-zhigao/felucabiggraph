@@ -69,7 +69,7 @@ static __global__ void coloring_kernel_inner(
 		const int * const edge_dest,
 		const int * const out_degree,
 		int * const values,
-		int * const add_values,
+		int * const undone,
 		int * continue_flag)
 {
 
@@ -83,7 +83,7 @@ static __global__ void coloring_kernel_inner(
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
 			values[edge_dest[i]] = values[edge_src[i]] + 1;
-			add_values[edge_dest[i]] = 1;
+			undone[edge_dest[i]] = 1;
 			*continue_flag = 1;
 		}
 	}
@@ -92,19 +92,12 @@ static __global__ void coloring_kernel_inner(
 	int new_value=0;
 	for (int i = index; i < edge_num; i+=n)
 	{	
-		new_value = add_values[edge_dest[i]];
-		//new_value=add_values[edge_dest[i]]*PAGERANK_COEFFICIENT+1.0f - PAGERANK_COEFFICIENT;
+		new_value = undone[edge_dest[i]];		
 
-		if(new_value == values[edge_dest[i]])
+		if(new_value == values[edge_src[i]])
 		{
 			flag = 1;
 		}
-		/*
-		if (fabs(new_value-values[edge_dest[i]])>PAGERANK_THRESHOLD)
-		{
-			flag=1;
-		}
-		*/
 	}
 	if (flag==1)  *continue_flag=1;
 }
