@@ -108,6 +108,7 @@ void merge_value_on_cpu(
 	omp_set_num_threads(NUM_THREADS);	
 
 	int colors[vertex_num];
+	int temp_color;
     
 
 #pragma omp parallel private(i)
@@ -117,11 +118,11 @@ void merge_value_on_cpu(
 		{
 			if (copy_num[i]>1)
 			{
-				new_value=0;
+				temp_color=h_undone[0][j];
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					new_value+=h_undone[j][i]; 
-					new_value = new_value % 100; 
+					if(temp_color > h_undone[j][i])
+						temp_color = h_undone[j][i];
 				}
 				//new_value = add_values[edge_dest[i]];
 				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
@@ -129,14 +130,12 @@ void merge_value_on_cpu(
 				//if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
 				//value_gpu[i]=new_value % 100;
+				color_value_gpu[i] = temp_color;
 				
 			}
-			colors[i] = color_value_gpu[i];	
+			//colors[i] = color_value_gpu[i];	
 		}
-
-		printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));
-   
-
+		//printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));   
 	}	
 }
 
