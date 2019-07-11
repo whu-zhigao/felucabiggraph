@@ -17,6 +17,6 @@ Description: This file defines the algorithm
 
 //void bfs_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int first_vertex, int *copy_num, int **position_id);
 
-void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id);
+void coloring_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id);
 
 #endif
