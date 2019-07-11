@@ -104,13 +104,10 @@ void merge_value_on_cpu(
 		int flag)
 {
 	int i,id;
-	int new_value=0;
 	omp_set_num_threads(NUM_THREADS);	
 
-	int colors[vertex_num];
 	int temp_color;
     
-
 #pragma omp parallel private(i)
 	{
 		id=omp_get_thread_num(); 
@@ -124,14 +121,7 @@ void merge_value_on_cpu(
 					if(temp_color > h_undone[j][i])
 						temp_color = h_undone[j][i];
 				}
-				//new_value = add_values[edge_dest[i]];
-				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
-
-				//if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
-					//flag=1;
-				//value_gpu[i]=new_value % 100;
-				color_value_gpu[i] = temp_color;
-				
+				color_value_gpu[i] = temp_color;				
 			}
 			//colors[i] = color_value_gpu[i];	
 		}
@@ -142,7 +132,7 @@ void merge_value_on_cpu(
 static __global__ void kernel_extract_values(
 		int const edge_num,
 		int * const edge_dest,
-		int * const add_value,
+		int * const undone,
 		int * const value
 		)
 {
@@ -151,8 +141,8 @@ static __global__ void kernel_extract_values(
 	for (int i = index; i < edge_num; i+=n)
 	{
 		int dest=edge_dest[i];
-		value[dest]=add_value[dest];
-		add_value[dest]=0;
+		value[dest]=undone[dest];
+		undone[dest]=0;
 	}  
 }
 
@@ -160,7 +150,7 @@ void Gather_result_color(
 		int const vertex_num, 
 		int const gpu_num, 
 		int * const copy_num,
-		int * const  *h_add_value,  
+		int * const  *h_delta_undone,  
 		int * const value_gpu
 		)
 {
@@ -174,12 +164,12 @@ void Gather_result_color(
 		{
 			if (copy_num[i]>1)
 			{
-				new_value=0;
+				new_value=h_delta_undone[0][i];
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					new_value+=h_add_value[j][i];  
+					if(new_value > h_delta_undone[j][i])
+						new_value = h_delta_undone[j][i];					  
 				}
-				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
 				value_gpu[i]=new_value;	
 			}
 		}
