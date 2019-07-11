@@ -118,7 +118,7 @@ void merge_value_on_cpu(
 		{
 			if (copy_num[i]>1)
 			{
-				temp_color=h_undone[0][j];
+				temp_color=h_undone[0][i];
 				for (int j = 0; j < gpu_num; ++j)
 				{
 					if(temp_color > h_undone[j][i])
