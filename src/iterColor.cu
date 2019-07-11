@@ -17,11 +17,6 @@
 #define ITERATE_IN_OUTER 2
 #define NUM_THREADS 1
 
-#define ITER 10000000
-
-#define PAGERANK_COEFFICIENT  0.85f
-#define PAGERANK_THRESHOLD  0.005f
-
 #ifdef __CUDA_RUNTIME_H__
 #define HANDLE_ERROR(err) if (err != cudaSuccess) {	\
 	printf("CUDA Error in %s at line %d: %s\n", \
