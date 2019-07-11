@@ -60,7 +60,6 @@ static __global__ void  pr_kernel_outer(
 			values[edge_dest[i]] = values[edge_src[i]] + 1;
 			add_values[edge_dest[i]] = 1;
             //undone[src] = 1;
-            *continue_flag = 1;
 		}
 		/*
 		if (out_degree[src])
