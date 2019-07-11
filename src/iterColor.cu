@@ -145,9 +145,9 @@ void merge_value_on_cpu(
 				//new_value = add_values[edge_dest[i]];
 				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
 
-				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
+				//if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
-				value_gpu[i]=new_value % 100;
+				//value_gpu[i]=new_value % 100;
 				
 			}
 
