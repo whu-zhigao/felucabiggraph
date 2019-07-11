@@ -170,14 +170,15 @@ void merge_value_on_cpu(
 				new_value=0;
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					new_value+=h_add_value[j][i];  
+					new_value+=h_add_value[j][i]; 
+					new_value = new_value % 100; 
 				}
 				//new_value = add_values[edge_dest[i]];
 				//new_value=PAGERANK_COEFFICIENT*new_value+1.0 - PAGERANK_COEFFICIENT;
 
 				if(fabs(new_value- value_gpu[i]>PAGERANK_THRESHOLD))
 					//flag=1;
-				value_gpu[i]=new_value;
+				value_gpu[i]=new_value % 100;
 				
 			}
 
