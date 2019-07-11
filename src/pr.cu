@@ -182,6 +182,9 @@ void merge_value_on_cpu(
 			}		
 		}
 
+		printf("vertex_num is: %d, The sizeof(value_gpu) is: %d and the sizeof(value_gpu[0]) is: %d, total color number is %d \n", vertex_num, sizeof(value_gpu), sizeof(value_gpu[0]), countDistinct(value_gpu, sizeof(value_gpu)/sizeof(value_gpu[0])));
+   
+
 	}
 	//printf("sizeof(value_gpu) is %d and sizeof(value_gpu[0]) is: %d \n",sizeof(value_gpu) / sizeof(value_gpu[0]));
 }
