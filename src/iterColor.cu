@@ -78,7 +78,7 @@ static __global__ void coloring_kernel_inner(
 		const int * const out_degree,
 		int * const values,
 		int * const add_values,
-		int * const continue_flag)
+		int * continue_flag)
 {
 
 	// total thread number & thread index of this thread
@@ -91,6 +91,8 @@ static __global__ void coloring_kernel_inner(
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
 			values[edge_dest[i]] = values[edge_src[i]] + 1;
+			add_values[edge_dest[i]] = 1;
+			*continue_flag = 1;
 		}
 		/*
 		if (out_degree[src])
