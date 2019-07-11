@@ -157,7 +157,7 @@ void merge_value_on_cpu(
 	int new_value=0;
 	omp_set_num_threads(NUM_THREADS);	
 
-	int colornumbers = sizeof(value_gpu) / sizeof(value_gpu[0]); 
+	int colors[vertex_num];
     
 
 #pragma omp parallel private(i)
@@ -181,10 +181,12 @@ void merge_value_on_cpu(
 				
 			}
 
+			colors[i] = value_gpu[i];
+
 			printf("Here is the %d th number and the Coloring value is: %d \n", i, value_gpu[i]);		
 		}
 
-		printf("vertex_num is: %d, The sizeof(value_gpu) is: %d and the sizeof(value_gpu[0]) is: %d, total color number is %d \n", vertex_num, sizeof(value_gpu), sizeof(value_gpu[0]), countDistinct(value_gpu, sizeof(value_gpu)/sizeof(value_gpu[0])));
+		printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));
    
 
 	}
