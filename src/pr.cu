@@ -189,7 +189,7 @@ void merge_value_on_cpu(
 	//printf("sizeof(value_gpu) is %d and sizeof(value_gpu[0]) is: %d \n",sizeof(value_gpu) / sizeof(value_gpu[0]));
 }
 
-void Gather_result_pr(
+void Gather_result_color(
 		int const vertex_num, 
 		int const gpu_num, 
 		int * const copy_num,
@@ -220,7 +220,7 @@ void Gather_result_pr(
 }
 
 /* PageRank algorithm on GPU */
-void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id)
+void coloring_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degree, int *copy_num, int **position_id)
 {
 	printf("Graph Coloring is running on GPU...............\n");
 	printf("Start malloc edgelist...\n");
@@ -481,7 +481,7 @@ void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degre
 	}
 
 	printf("Gather result on cpu....\n");
-	Gather_result_pr(vertex_num,gpu_num,copy_num,h_add_value,value_gpu);
+	Gather_result_color(vertex_num,gpu_num,copy_num,h_add_value,value_gpu);
 
 	printf("Time print\n");
 
@@ -494,7 +494,7 @@ void pr_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out_degre
 	}
 	total_time=total_time_n>gather_time?total_time_n:gather_time;
 
-//	printf("Total time of pr_gpu is %.3f ms\n",total_time);
+//	printf("Total time of coloring_gpu is %.3f ms\n",total_time);
 	printf("Elapsed time of coloring is %.3f ms\n", total_time/(step));
 	printf("-------------------------------------------------------\n");
 	printf("Detail:\n");
