@@ -91,7 +91,7 @@ static __global__ void pr_kernel_inner(
 	{
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
-			values[dest] = values[src] + 1;
+			values[edge_dest[i]] = values[edge_src[i]] + 1;
 		}
 		/*
 		if (out_degree[src])
