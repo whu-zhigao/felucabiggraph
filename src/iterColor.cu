@@ -36,7 +36,7 @@ static __global__ void  coloring_kernel_outer(
 		const int * const edge_dest,
 		const int * const out_degree,
 		int * const values,
-		int * const add_values)
+		int * const undone)
 {
 	// total thread number & thread index of this thread
 	int n = blockDim.x * gridDim.x;
@@ -58,16 +58,8 @@ static __global__ void  coloring_kernel_outer(
 			add_values[edge_dest[i]] = atomicAdd(&add_values[edge_dest[i]],delta) % 100;
 			*/
 			values[edge_dest[i]] = values[edge_src[i]] + 1;
-			add_values[edge_dest[i]] = 1;
-            //undone[src] = 1;
+			undone[edge_dest[i]] = 1;
 		}
-		/*
-		if (out_degree[src])
-		{
-			sum=values[src]/out_degree[src];
-		    atomicAdd(&add_values[dest],sum);
-		}
-		*/		
 	}
 }
 
@@ -94,17 +86,10 @@ static __global__ void coloring_kernel_inner(
 			add_values[edge_dest[i]] = 1;
 			*continue_flag = 1;
 		}
-		/*
-		if (out_degree[src])
-		{
-			sum=values[src]/out_degree[src];
-		    atomicAdd(&add_values[dest],sum);
-		}
-		*/
 	}
 	__syncthreads();
 	//check
-	int new_value=0.0f;
+	int new_value=0;
 	for (int i = index; i < edge_num; i+=n)
 	{	
 		new_value = add_values[edge_dest[i]];
