@@ -72,7 +72,6 @@ static __global__ void coloring_kernel_inner(
 		int * const undone,
 		int * continue_flag)
 {
-
 	// total thread number & thread index of this thread
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
@@ -116,7 +115,7 @@ static __global__ void kernel_extract_values(
 	{
 		int dest=edge_dest[i];
 		value[dest]=add_value[dest];
-		add_value[dest]=0.0;
+		add_value[dest]=0;
 	}  
 }
 
