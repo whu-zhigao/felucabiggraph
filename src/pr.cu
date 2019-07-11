@@ -184,7 +184,7 @@ void merge_value_on_cpu(
 
 			colors[i] = value_gpu[i];
 
-			printf("Here is the %d th number and the Coloring value is: %d \n", i, value_gpu[i]);		
+			//printf("Here is the %d th number and the Coloring value is: %d \n", i, value_gpu[i]);		
 		}
 
 		printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));
