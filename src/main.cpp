@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
     free(origin_g);
     pr_gpu(g,gpu_num,value_gpu_pr,dsize,out_degree,copy_num,position_id);
 
-    printf("The sizeof(value_gpu_pr) is: %d and the sizeof(value_gpu_pr[0]) is: %d, total color number is %d \n", sizeof(value_gpu_pr), sizeof(value_gpu_pr[0]), countDistinct(value_gpu_pr, sizeof(value_gpu_pr)/sizeof(value_gpu_pr[0])));
+    printf("vertex_num is: %d, The sizeof(value_gpu_pr) is: %d and the sizeof(value_gpu_pr[0]) is: %d, total color number is %d \n", vertex_num, sizeof(value_gpu_pr), sizeof(value_gpu_pr[0]), countDistinct(value_gpu_pr, sizeof(value_gpu_pr)/sizeof(value_gpu_pr[0])));
    
     free(g);
     free(out_degree);
