@@ -9,7 +9,6 @@
 
 #include "graph.h"
 #include "timer.h"
-//#include "algorithm.h"
 #include "cuda_runtime.h"
 #include "util.h"
 
@@ -96,29 +95,11 @@ static __global__ void coloring_kernel_inner(
 	if (flag==1)  *continue_flag=1;
 }
 
-
-static __global__ void kernel_extract_values(
-		int const edge_num,
-		int * const edge_dest,
-		int * const add_value,
-		int * const value
-		)
-{
-	int n = blockDim.x * gridDim.x;
-	int index = threadIdx.x + blockIdx.x * blockDim.x;
-	for (int i = index; i < edge_num; i+=n)
-	{
-		int dest=edge_dest[i];
-		value[dest]=add_value[dest];
-		add_value[dest]=0;
-	}  
-}
-
 void merge_value_on_cpu(
 		int const vertex_num, 
 		int const gpu_num, 
-		int * const  *h_add_value, 
-		int * const value_gpu , 
+		int * const  *h_undone, 
+		int * const color_value_gpu , 
 		int *copy_num, 
 		int flag)
 {
@@ -139,7 +120,7 @@ void merge_value_on_cpu(
 				new_value=0;
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					new_value+=h_add_value[j][i]; 
+					new_value+=h_undone[j][i]; 
 					new_value = new_value % 100; 
 				}
 				//new_value = add_values[edge_dest[i]];
@@ -150,17 +131,30 @@ void merge_value_on_cpu(
 				//value_gpu[i]=new_value % 100;
 				
 			}
-
-			colors[i] = value_gpu[i];
-
-			//printf("Here is the %d th number and the Coloring value is: %d \n", i, value_gpu[i]);		
+			colors[i] = color_value_gpu[i];	
 		}
 
 		printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));
    
 
-	}
-	//printf("sizeof(value_gpu) is %d and sizeof(value_gpu[0]) is: %d \n",sizeof(value_gpu) / sizeof(value_gpu[0]));
+	}	
+}
+
+static __global__ void kernel_extract_values(
+		int const edge_num,
+		int * const edge_dest,
+		int * const add_value,
+		int * const value
+		)
+{
+	int n = blockDim.x * gridDim.x;
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	for (int i = index; i < edge_num; i+=n)
+	{
+		int dest=edge_dest[i];
+		value[dest]=add_value[dest];
+		add_value[dest]=0;
+	}  
 }
 
 void Gather_result_color(
