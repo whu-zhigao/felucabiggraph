@@ -42,19 +42,25 @@ static __global__ void  pr_kernel_outer(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int sum=0.0f;
-	int delta = 0;
 
-    curandState localState;
-    curand_init(clock64(),index,0,&localState);
+	//int delta = 0;
+    //curandState localState;    
+    //curand_init(clock64(),index,0,&localState);
 
 	for (int i = index; i < edge_num; i+=n)
 	{
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
+			/*
 			//delta = curand(&localState);
 			delta = curand(&localState) % 100;			
 			//atomicAdd(&add_values[edge_dest[i]],delta);	//atomicAdd(&add_values[edge_dest[i]],delta) equals add_values[edge_dest[i]]+=delta;
 			add_values[edge_dest[i]] = atomicAdd(&add_values[edge_dest[i]],delta) % 100;
+			*/
+			values[edge_dest[i]] = values[edge_src[i]] + 1;
+			add_values[edge_dest[i]] = 1;
+            //undone[src] = 1;
+            *continue_flag = 1;
 		}
 		/*
 		if (out_degree[src])
@@ -80,23 +86,12 @@ static __global__ void pr_kernel_inner(
 	int n = blockDim.x * gridDim.x;
 	int index = threadIdx.x + blockIdx.x * blockDim.x;
 	int flag=0;
-	//int sum=0.0f;
-	int delta = 0;
-
-    curandState localState;
-    curand_init(clock64(),index,0,&localState);
 
 	for (int i = index; i < edge_num; i+=n)
 	{
-		int src=edge_src[i];
-		int dest=edge_dest[i];
-
-		if(values[src] == values[dest])
+		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
-			delta = curand(&localState) % 100;	
-			//printf("here is delta value %d \n", delta);		
-			atomicAdd(&add_values[dest],delta);	
-			//printf("here is atomicAdd value %d \n", atomicAdd(&add_values[dest],delta));	
+			values[dest] = values[src] + 1;
 		}
 		/*
 		if (out_degree[src])
