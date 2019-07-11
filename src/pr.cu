@@ -44,9 +44,6 @@ static __global__ void  pr_kernel_outer(
 	int sum=0.0f;
 	int delta = 0;
 
-	int cudelta = 0;
-	int cu_value = 0;
-
     curandState localState;
     curand_init(clock64(),index,0,&localState);
 
@@ -55,11 +52,9 @@ static __global__ void  pr_kernel_outer(
 		if(values[edge_src[i]] == values[edge_dest[i]])
 		{
 			//delta = curand(&localState);
-			delta = curand(&localState) % 100;
-			cudelta = delta;
-			cu_value = add_values[edge_dest[i]];
-			atomicAdd(&add_values[edge_dest[i]],delta);	
-			printf("Delta: %d, Delta Add: %d, cu_value: %d, add_values: %d, atomicAdd: %d\n", cudelta, delta, cu_value, add_values[edge_dest[i]], atomicAdd(&add_values[edge_dest[i]],delta));	
+			delta = curand(&localState) % 100;			
+			//atomicAdd(&add_values[edge_dest[i]],delta);	//atomicAdd(&add_values[edge_dest[i]],delta) equals add_values[edge_dest[i]]+=delta;
+			add_values[edge_dest[i]] = atomicAdd(&add_values[edge_dest[i]],delta) % 100;
 		}
 		/*
 		if (out_degree[src])
