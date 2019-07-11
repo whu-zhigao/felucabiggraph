@@ -120,7 +120,7 @@ void merge_value_on_cpu(
 				temp_color=h_undone[0][i];
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					if(temp_color > h_undone[j][i])
+					if(temp_color < h_undone[j][i])
 						temp_color = h_undone[j][i];
 				}
 				color_value_gpu[i] = temp_color;				
@@ -169,7 +169,7 @@ void Gather_result_color(
 				new_value=h_delta_undone[0][i];
 				for (int j = 0; j < gpu_num; ++j)
 				{
-					if(new_value > h_delta_undone[j][i])
+					if(new_value < h_delta_undone[j][i])
 						new_value = h_delta_undone[j][i];					  
 				}
 				value_gpu[i]=new_value;	
