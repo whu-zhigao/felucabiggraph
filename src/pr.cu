@@ -55,7 +55,7 @@ static __global__ void  pr_kernel_outer(
 			delta = curand(&localState) % 100;
 			printf("The value of delta: %d \t", delta);
 			atomicAdd(&add_values[edge_dest[i]],delta);	
-			printf("The value of atomicAdd: %d \n", atomicAdd(&add_values[edge_dest[i]],delta));	
+			printf("The value of atomicAdd: %d add_values is %d \n", atomicAdd(&add_values[edge_dest[i]],delta), add_values[edge_dest[i]]);	
 		}
 		/*
 		if (out_degree[src])
