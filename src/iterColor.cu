@@ -443,6 +443,12 @@ void coloring_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out
 	printf("Gather result on cpu....\n");
 	Gather_result_color(vertex_num,gpu_num,copy_num,h_add_value,value_gpu);
 
+	printf("vertex ID:\t Vertex Color:\n");
+	for(int i = 0; i < vertex_num; i++)
+	{
+		printf("%d \t %d \n", i, value_gpu[i]);
+	}
+
 	printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(value_gpu, vertex_num));
 
 	printf("Time print\n");
