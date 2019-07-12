@@ -174,9 +174,10 @@ void Gather_result_color(
 				}
 				value_gpu[i]=new_value;	
 			}
+			printf("Vertex ID: %d, Vertex Color: %d \n", i, value_gpu[i]); 
 		}
 	}
-	printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(value_gpu, vertex_num));  
+	//printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(value_gpu, vertex_num));  
 }
 
 /* PageRank algorithm on GPU */
