@@ -55,7 +55,7 @@ static __global__ void  coloring_kernel_outer(
 			undone[edge_dest[i]] = 1;
 		}
 
-		//printf("vertex %d, values[edge_src]: %d, values[edge_dest]: %d \n", i, values[edge_src[i]], values[edge_dest[i]]);
+		printf("vertex %d, values[edge_src]: %d, values[edge_dest]: %d \n", i, values[edge_src[i]], values[edge_dest[i]]);
 	}
 }
 
@@ -125,7 +125,7 @@ void merge_value_on_cpu(
 				}
 				color_value_gpu[i] = temp_color;				
 			}
-			//colors[i] = color_value_gpu[i];	
+			//colors[i] = color_value_gpu[i];
 		}
 		//printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(colors, vertex_num));   
 	}	
@@ -174,7 +174,7 @@ void Gather_result_color(
 				}
 				value_gpu[i]=new_value;	
 			}
-			printf("Vertex ID: %d, Vertex Color: %d \n", i, value_gpu[i]); 
+			//printf("Vertex ID: %d, Vertex Color: %d \n", i, value_gpu[i]); 
 		}
 	}
 	//printf("vertex_num is: %d, total color number is %d \n", vertex_num, countDistinct(value_gpu, vertex_num));  
