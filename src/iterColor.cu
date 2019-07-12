@@ -55,7 +55,7 @@ static __global__ void  coloring_kernel_outer(
 			undone[edge_dest[i]] = 1;
 		}
 
-		printf("vertex %d, values[edge_sec]: %d, values[edge_dest]: %d \n", i, values[edge_src[i]], values[edge_dest[i]]);
+		//printf("vertex %d, values[edge_src]: %d, values[edge_dest]: %d \n", i, values[edge_src[i]], values[edge_dest[i]]);
 	}
 }
 
