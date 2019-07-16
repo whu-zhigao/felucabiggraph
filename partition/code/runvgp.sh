@@ -1,2 +1,12 @@
-va -jar VGP.jar /home/luoxuan/datasets/vgp-edgelist/amazon.txt_totem 2 -output amazon-2
-
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/amazon_68M.txt.txt_totem 2 -output amazon-2
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/RoadNet-CA-79M.txt.txt_totem 2 -output RoadNet
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/soc-LiveJournal1.txt.txt_totem 2 -output livejournal
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/com-orkut.ungraph.txt.txt_totem 2 -output Orkut
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/dblp_88M.txt.txt_totem 2 -output dblp
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/web-Stanford.txt.txt_totem 2 -output stanford
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/wiki-Talk-59M.txt.txt_totem 2 -output wiki
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/youtube_37M.txt.txt_totem 2 -output youtube
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/random-graph.txt.txt_totem 2 -output random
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/RMAT16_2_2.4G.txt.txt_totem 2 -output RMAT
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/twitter_11G.txt.txt_totem 2 -output twitter
+java -jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/code/VGP-master/dist/VGP.jar /vpublic01/frog/zhengzhigao/felucabiggraph/partition/data-format-parse/webbase_16G.txt.txt_totem 2 -output webbase
