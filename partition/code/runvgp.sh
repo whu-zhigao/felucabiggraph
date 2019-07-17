@@ -6,7 +6,7 @@
 #java -jar VGP-master/dist/VGP.jar ../data-format-parse/wiki-Talk-59M.txt.txt_totem 2 -output wiki
 #java -jar VGP-master/dist/VGP.jar ../data-format-parse/youtube_37M.txt.txt_totem 2 -output youtube
 java -jar VGP-master/dist/VGP.jar ../data-format-parse/com-orkut.ungraph.txt.txt_totem 2 -output Orkut
-java -jar VGP-master/dist/VGP.jar ../data-format-parse/random-graph.txt.txt_totem 2 -output random
-java -jar VGP-master/dist/VGP.jar ../data-format-parse/RMAT16_2_2.4G.txt.txt_totem 2 -output RMAT
-java -jar VGP-master/dist/VGP.jar ../data-format-parse/twitter_11G.txt.txt_totem 2 -output twitter
-java -jar VGP-master/dist/VGP.jar ../data-format-parse/webbase_16G.txt.txt_totem 2 -output webbase
+java -jar VGP-master/dist/VGP.jar ../data-format-parse/random-graph.txt.txt_totem 4 -output random
+java -jar VGP-master/dist/VGP.jar ../data-format-parse/RMAT16_2_2.4G.txt.txt_totem 4 -output RMAT
+java -jar VGP-master/dist/VGP.jar ../data-format-parse/twitter_11G.txt.txt_totem 4 -output twitter
+java -jar VGP-master/dist/VGP.jar ../data-format-parse/webbase_16G.txt.txt_totem 4 -output webbase
