@@ -431,7 +431,7 @@ void coloring_gpu(Graph **g,int gpu_num,int *value_gpu,DataSize *dsize, int* out
 			extract_bitmap_time[i]+=record_time;
 			total_compute_time[i]=outer_compute_time[i]+extract_bitmap_time[i]-inner_compute_time[i]>0?(outer_compute_time[i]+extract_bitmap_time[i]):inner_compute_time[i];
 		}		
-	}while(flag && step<50);
+	}while(flag && step<50000);
 
 
 	//Todo to get the true value of inner vertice and outer vertice
